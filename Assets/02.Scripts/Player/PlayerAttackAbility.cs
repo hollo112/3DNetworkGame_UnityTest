@@ -1,45 +1,52 @@
 using UnityEngine;
 
-public enum AttackMode
+public class PlayerAttackAbility : PlayerAbility
 {
-    Sequential,
-    Random
-}
+    private Animator _animator;
 
-public class PlayerAttackAbility : MonoBehaviour
-{
-    [SerializeField] private AttackMode attackMode = AttackMode.Sequential;
+    [SerializeField] private EAnimationSequenceType _animationSequenceType;
 
-    private static readonly string[] AttackNames = { "Attack1", "Attack2", "Attack3" };
+    private int _prevAnimationNumber = 0;
+    private float _attackTimer = 0f;
 
-    private PlayerAnimationAbility _animationAbility;
-    private int _sequentialIndex;
-
-    private void Awake()
+    private void Start()
     {
-        _animationAbility = GetComponent<PlayerAnimationAbility>();
+        _animator = GetComponent<Animator>();
     }
-
+    
     private void Update()
     {
-        if (!Input.GetMouseButtonDown(0))
-            return;
+        if (!_owner.PhotonView.IsMine) return;
 
-        if (_animationAbility.IsPlayingAttack())
-            return;
+        _attackTimer += Time.deltaTime;
 
-        _animationAbility.PlayAttack(PickNextAttack());
-    }
-
-    private string PickNextAttack()
-    {
-        if (attackMode == AttackMode.Sequential)
+        if (Input.GetMouseButton(0) && _attackTimer >= _owner.Stat.AttackSpeed)
         {
-            string attack = AttackNames[_sequentialIndex];
-            _sequentialIndex = (_sequentialIndex + 1) % AttackNames.Length;
-            return attack;
-        }
+            _attackTimer = 0f;
 
-        return AttackNames[Random.Range(0, AttackNames.Length)];
+            int animationNumber = 0;
+            switch (_animationSequenceType)
+            {
+                case EAnimationSequenceType.Sequence:
+                {
+                    animationNumber = 1 + (_prevAnimationNumber++) % 3;
+                    break;
+                }
+                
+                case EAnimationSequenceType.Random:
+                {
+                    animationNumber = Random.Range(1, 4);
+                    break;
+                }
+            }
+            
+            _animator.SetTrigger($"Attack{animationNumber}");
+        }
     }
+}
+
+public enum EAnimationSequenceType
+{
+    Sequence,
+    Random,
 }
