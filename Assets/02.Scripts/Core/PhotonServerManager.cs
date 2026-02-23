@@ -13,7 +13,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
 
 
     private string _version = "0.0.1";
-    private string _nickname = "Mongil";
+    private string _nickname = "Yongjin";
     
     private void Start()
     {
