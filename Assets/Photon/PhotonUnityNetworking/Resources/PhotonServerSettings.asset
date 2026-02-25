@@ -39,6 +39,11 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - PlayAttackAnimation
+  - TakeDamage
+  - RPC_Respawn
+  - PlayDieAnimation
+  - PlayRespawnAnimation
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

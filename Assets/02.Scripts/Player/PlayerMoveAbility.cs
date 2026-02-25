@@ -12,17 +12,20 @@ public class PlayerMoveAbility : PlayerAbility
     private CharacterController _characterController;
     private Animator _animator;
     private PlayerStaminaAbility _stamina;
+    private PlayerHealthAbility _health;
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
         _animator = GetComponent<Animator>();
         _stamina = _owner.GetAbility<PlayerStaminaAbility>();
+        _health = _owner.GetAbility<PlayerHealthAbility>();
     }
 
     private void Update()
     {
         if (!_owner.PhotonView.IsMine) return;
+        if (_health.IsDead) return;
 
         Vector3 direction = GetMoveDirection();
         bool isMoving = direction.sqrMagnitude > 0.01f;

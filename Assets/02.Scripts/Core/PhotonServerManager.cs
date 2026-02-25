@@ -82,7 +82,7 @@ public class PhotonServerManager : MonoBehaviourPunCallbacks
         
         // 리소스 폴더에서 "Player" 이름을 가진 프리팹을 생성(인스턴스화)하고, 서버에 등록도 한다
         // -> 리소스 폴더 대신 다른 방법 찾아보기
-        PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate("Player", SpawnManager.Instance.GetRandomSpawnPosition(), Quaternion.identity);
     }
 
     // 랜덤방 입장에 실패하면 자동으로 호출되는 콜백 함수
