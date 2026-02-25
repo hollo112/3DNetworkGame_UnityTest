@@ -15,9 +15,10 @@ public class PlayerWeaponHitAbility : PlayerAbility
             Vector3 hitPoint = other.ClosestPoint(transform.position);
             SpawnHitEffect(hitPoint);
             _owner.PhotonView.RPC(nameof(PlayerController.RPC_SpawnHitEffect), RpcTarget.Others, hitPoint);
-
+            
+            int actorNumber = PhotonNetwork.LocalPlayer.ActorNumber;
             PlayerController otherPlayer = other.GetComponent<PlayerController>();
-            otherPlayer.PhotonView.RPC(nameof(damageable.TakeDamage), RpcTarget.All, _owner.Stat.Damage);
+            otherPlayer.PhotonView.RPC(nameof(damageable.TakeDamage), RpcTarget.All, _owner.Stat.Damage, actorNumber);
         }
     }
 

@@ -17,9 +17,9 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamageable
     }
 
     [PunRPC]
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, int attackerActorNumber)
     {
-        GetAbility<PlayerHealthAbility>().TakeDamage(damage);
+        GetAbility<PlayerHealthAbility>().TakeDamage(damage, attackerActorNumber);
     }
 
     [PunRPC]

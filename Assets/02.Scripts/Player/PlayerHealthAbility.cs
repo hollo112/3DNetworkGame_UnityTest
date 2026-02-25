@@ -33,7 +33,7 @@ public class PlayerHealthAbility : PlayerAbility
         _owner.Stat.Health = _owner.Stat.MaxHealth;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, int attackerActorNumber)
     {
         if (IsDead) return;
 
@@ -51,19 +51,21 @@ public class PlayerHealthAbility : PlayerAbility
         if (_owner.Stat.Health <= 0f)
         {
             _owner.Stat.Health = 0f;
-            Die();
+            Die(attackerActorNumber);
         }
     }
 
-    private void Die()
+    private void Die(int attackerActorNumber)
     {
         if (_owner.PhotonView.IsMine)
         {
+            
             PlayDieAnimation();
             
             _owner.PhotonView.RPC(nameof(PlayDieAnimation), RpcTarget.Others);
             StartCoroutine(RespawnCoroutine());
         }
+        PhotonRoomManager.Instance.OnPlayerDeath(attackerActorNumber);
     }
 
     private IEnumerator RespawnCoroutine()
