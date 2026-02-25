@@ -44,6 +44,8 @@ MonoBehaviour:
   - RPC_Respawn
   - PlayDieAnimation
   - PlayRespawnAnimation
+  - RPC_SpawnHitEffect
+  - SpawnHitEffect
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

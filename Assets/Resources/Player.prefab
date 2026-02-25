@@ -606,6 +606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390a7d7652956b14f95977395e3684da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponHitAbility
+  _hitEffectPrefab: {fileID: 5238538877814813142, guid: 47096eff328e11a418ace7db2d72aa97, type: 3}
 --- !u!1 &2530818862283391586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,6 +1348,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Die
+  - Type: 9
+    SynchronizeType: 0
+    Name: Respawn
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -1374,6 +1378,7 @@ MonoBehaviour:
     MaxStamina: 100
     Stamina: 100
     Damage: 20
+  _hitEffectPrefab: {fileID: 5238538877814813142, guid: 47096eff328e11a418ace7db2d72aa97, type: 3}
 --- !u!114 &8943416143005784970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1456,6 +1461,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthAbility
   _respawnDelay: 4
+  _CameraShakeDuration: 0.3
+  _CameraShakeStrength: 0.5
+  _PlayerShakeDuration: 0.3
+  _PlayerShakeStrength: 0.2
+  _vignettePeakScale: 3
+  _vignetteFadeInDuration: 0.1
+  _vignetteFadeOutDuration: 0.4
 --- !u!1 &3884247951466816483
 GameObject:
   m_ObjectHideFlags: 0

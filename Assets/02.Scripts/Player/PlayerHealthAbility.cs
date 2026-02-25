@@ -11,8 +11,14 @@ public class PlayerHealthAbility : PlayerAbility
     [SerializeField] private float _PlayerShakeDuration = 0.3f;
     [SerializeField] private float _PlayerShakeStrength = 0.2f;
 
+
+    [SerializeField] private float _vignettePeakScale = 3f;
+    [SerializeField] private float _vignetteFadeInDuration = 0.1f;
+    [SerializeField] private float _vignetteFadeOutDuration = 0.4f;
+
     private Animator _animator;
     private CharacterController _characterController;
+    private Q_Vignette_Single _vignette;
 
     private static readonly int DieTrigger = Animator.StringToHash("Die");
     private static readonly int RespawnTrigger = Animator.StringToHash("Respawn");
@@ -23,6 +29,7 @@ public class PlayerHealthAbility : PlayerAbility
     {
         _animator = GetComponentInChildren<Animator>();
         _characterController = GetComponent<CharacterController>();
+        _vignette = FindAnyObjectByType<Q_Vignette_Single>();
         _owner.Stat.Health = _owner.Stat.MaxHealth;
     }
 
@@ -38,6 +45,7 @@ public class PlayerHealthAbility : PlayerAbility
         if (_owner.PhotonView.IsMine)
         {
             Camera.main.transform.DOShakePosition(_CameraShakeDuration, _CameraShakeStrength);
+            PlayVignetteEffect();
         }
 
         if (_owner.Stat.Health <= 0f)
@@ -83,6 +91,20 @@ public class PlayerHealthAbility : PlayerAbility
         _animator.SetTrigger(RespawnTrigger);
     }
     
+    private void PlayVignetteEffect()
+    {
+        if (_vignette == null) return;
+
+        DOTween.Kill(_vignette);
+        _vignette.mainScale = 0f;
+        DOTween.To(() => _vignette.mainScale, x => _vignette.mainScale = x, _vignettePeakScale, _vignetteFadeInDuration)
+            .OnComplete(() =>
+            {
+                DOTween.To(() => _vignette.mainScale, x => _vignette.mainScale = x, 0f, _vignetteFadeOutDuration);
+            })
+            .SetTarget(_vignette);
+    }
+
     [PunRPC]
     private void PlayDieAnimation()
     {

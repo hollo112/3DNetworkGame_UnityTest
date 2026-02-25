@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamageable
 {
     public PhotonView PhotonView;
     public PlayerStat Stat;
+    [SerializeField] private GameObject _hitEffectPrefab;
 
     private void Awake()
     {
@@ -19,6 +20,15 @@ public class PlayerController : MonoBehaviour, IPunObservable, IDamageable
     public void TakeDamage(float damage)
     {
         GetAbility<PlayerHealthAbility>().TakeDamage(damage);
+    }
+
+    [PunRPC]
+    public void RPC_SpawnHitEffect(Vector3 position)
+    {
+        if (_hitEffectPrefab == null) return;
+
+        GameObject effect = Instantiate(_hitEffectPrefab, position, Quaternion.identity);
+        Destroy(effect, 2f);
     }
 
     private float _lastHealth;
