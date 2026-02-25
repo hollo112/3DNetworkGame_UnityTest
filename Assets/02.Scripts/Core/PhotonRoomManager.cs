@@ -11,6 +11,9 @@ public class PhotonRoomManager : MonoBehaviourPunCallbacks
     private Room _room;
     public Room Room => _room;
     public event Action OnDataChanged;
+    public event Action<Player> OnPlayerEntered;
+    public event Action<Player> OnPlayerLeft;
+    
     private void Awake()
     {
         Instance = this;
@@ -37,5 +40,19 @@ public class PhotonRoomManager : MonoBehaviourPunCallbacks
         // 리소스 폴더에서 "Player" 이름을 가진 프리팹을 생성(인스턴스화)하고, 서버에 등록도 한다
         // -> 리소스 폴더 대신 다른 방법 찾아보기
         PhotonNetwork.Instantiate("Player", SpawnManager.Instance.GetRandomSpawnPosition(), Quaternion.identity);
+    }
+
+    // 새로운 플레이어가 방에 입장하면 자동으로 호출되는 함수
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        OnDataChanged?.Invoke();
+        OnPlayerEntered?.Invoke(newPlayer);
+    }
+
+    // 플레이어가 방에서 퇴장하면 자동으로 호출되는 함수
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        OnDataChanged?.Invoke();
+        OnPlayerLeft?.Invoke(otherPlayer);
     }
 }
